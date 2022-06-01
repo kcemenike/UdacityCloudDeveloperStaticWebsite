@@ -34,7 +34,8 @@ jobs:
     docker:
       - image: circleci/node:14
     environment:
-      CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
+      TEST_ENV: 123
+      # CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
     steps:
       - run:
           name: 'Say World'
@@ -42,6 +43,15 @@ jobs:
       - run: echo This is pipeline ID <<pipeline.id>>
       - run: echo $CIRCLE_COMPARE_URL
       - run: echo $CIRCLE_USERNAME
+      - run: |
+          echo CircleBranch: $CIRCLE_BRANCH
+          WorkflowID: $CIRCLE_WORKFLOW_ID
+          BuildNumber: $CIRCLE_BUILD_NUM
+          PRNumber: $CIRCLE_PR_NUMBER
+          SHA: $CIRCLE_SHA2
+          CircleCompareURL: $CIRCLE_COMPARE_URL
+          Repo: $CIRCLE_REPOSITORY_URL
+          Branch: $CIRCLE_BRANCH
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
