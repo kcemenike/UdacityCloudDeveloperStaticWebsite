@@ -32,7 +32,7 @@ jobs:
           command: 'echo Hello'
   print_world:
     docker:
-      - image: circleci/node:14
+      - image: cimg/node:14
     steps:
       - run:
           name: 'Say World'
@@ -47,5 +47,5 @@ workflows:
       - welcome/run
       - print_hello
       - print_world
-          requires:
-            - print_hello
+        # requires:
+        #   - print_hello
