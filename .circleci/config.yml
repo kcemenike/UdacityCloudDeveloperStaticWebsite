@@ -34,21 +34,17 @@ jobs:
     docker:
       - image: circleci/node:14
     steps:
-      - checkout
       - run:
           name: 'Say World'
           command: 'echo World!'
-          requires:
-            - print_hello
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  say-hello-workflow:
-    jobs:
-      - say-hello
   welcome:
     # Run the welcome/run job in its own container
     jobs:
       - welcome/run
       - print_world
+        requires:
+          - print_hello
