@@ -43,7 +43,7 @@ jobs:
       - run: echo This is pipeline ID <<pipeline.id>>
       - run: echo $CIRCLE_COMPARE_URL
       - run: echo $CIRCLE_USERNAME
-      - run: |
+      - run: >
           echo CircleBranch: $CIRCLE_BRANCH
           WorkflowID: $CIRCLE_WORKFLOW_ID
           BuildNumber: $CIRCLE_BUILD_NUM
