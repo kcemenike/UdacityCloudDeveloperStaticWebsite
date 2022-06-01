@@ -41,6 +41,7 @@ jobs:
           command: 'echo World!'
       - run: echo This is pipeline ID <<pipeline.id>>
       - run: echo $CIRCLE_COMPARE_URL
+      - run: echo $CIRCLE_USERNAME
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
