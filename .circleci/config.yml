@@ -101,4 +101,6 @@ workflows:
           requires:
             - save_hello_world_output
       - this-job-will-fail
-      - check-failure
+      - check-failure:
+          requires:
+            - this-job-will-fail
