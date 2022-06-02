@@ -68,7 +68,7 @@ jobs:
       - run: ls -al /tmp
       - run:
           name: 'Get output'
-          command: cat output.txt
+          command: cat /tmp/output.txt
       - run: ls -al /tmp
 
 # Invoke jobs via workflows
