@@ -75,6 +75,14 @@ jobs:
           name: 'Get output'
           command: cat /tmp/output.txt
       - run: ls -al /tmp
+  this_job_will_fail:
+    steps:
+      run: exit 1
+  check-failure:
+    steps:
+      - run: echo Job has FAILED by user
+          when: on_fail
+
 workflows:
   welcome-workflow: # this is the name of the workflow
     jobs:
@@ -88,3 +96,5 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
+      = this-job-will-fail
+      - check-failure
