@@ -79,12 +79,9 @@ jobs:
     <<: *default-docker
     steps:
       - run: exit 1
-  check-failure:
-    <<: *default-docker
-    steps:
       - run:
           name: failed job
-          command: echo Job has FAILED by user
+          command: echo Job has failed by user
           when: on_fail
 
 workflows:
@@ -101,6 +98,3 @@ workflows:
           requires:
             - save_hello_world_output
       - this-job-will-fail
-      - check-failure:
-          requires:
-            - this-job-will-fail
