@@ -80,7 +80,9 @@ jobs:
       run: exit 1
   check-failure:
     steps:
-      - run: echo Job has FAILED by user
+      - run: 
+          name: failed job
+          command: echo Job has FAILED by user
           when: on_fail
 
 workflows:
