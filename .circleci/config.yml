@@ -12,7 +12,7 @@ commands:
         type: string
         default: 'World'
     steps:
-      - run: echo Hello <<parameters.arg1>>
+      - run: echo Hello <<parameters.arg1>>. This is $CIRCLE_WORKFLOW_ID.
 jobs:
   say-hello:
     docker:
