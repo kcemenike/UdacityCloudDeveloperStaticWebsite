@@ -36,8 +36,7 @@ jobs:
           name: 'Print Hello'
           command: 'echo Hello'
   print_world:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     environment:
       MY_NAME: Kelechi
       # CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
@@ -59,8 +58,7 @@ jobs:
           Branch: $CIRCLE_BRANCH
       - run: echo $MY_NAME
   save_hello_world_output:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     steps:
       - run: ls -al /tmp
       - run:
@@ -73,8 +71,7 @@ jobs:
       - run: ls -al /tmp
 
   print_output_file:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     steps:
       - attach_workspace:
           at: /tmp
