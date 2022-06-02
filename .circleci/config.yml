@@ -1,6 +1,18 @@
 version: 2.1
 orbs:
   welcome: circleci/welcome-orb@0.4.1
+defaults: &default
+  docker:
+    - image: circleci/node:14
+commands:
+  sayHello:
+    description: A way to describe the command
+    parameters:
+      arg1:
+        type: string
+        default: 'World'
+    steps:
+      - run: echo Hello <<parameters.arg1>>
 jobs:
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -14,17 +26,17 @@ jobs:
       - run:
           name: 'Say hello'
           command: 'echo Hello, World!'
+      - sayHello:
+          arg1: Kelechi
   print_hello:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     steps:
       - checkout
       - run:
           name: 'Print Hello'
           command: 'echo Hello'
   print_world:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     environment:
       MY_NAME: Kelechi
       # CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
@@ -46,8 +58,7 @@ jobs:
           Branch: $CIRCLE_BRANCH
       - run: echo $MY_NAME
   save_hello_world_output:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     steps:
       - run: ls -al /tmp
       - run:
@@ -58,10 +69,8 @@ jobs:
           paths:
             - output.txt
       - run: ls -al /tmp
-
   print_output_file:
-    docker:
-      - image: circleci/node:14
+    <<: *default
     steps:
       - attach_workspace:
           at: /tmp
@@ -78,6 +87,7 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - welcome/run
+      - say-hello
       - print_hello
       - print_world:
           requires:
