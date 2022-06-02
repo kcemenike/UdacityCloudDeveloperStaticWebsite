@@ -34,7 +34,7 @@ jobs:
     docker:
       - image: circleci/node:14
     environment:
-      TEST_ENV: 123
+      MY_NAME: Kelechi
       # CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
     steps:
       - run:
@@ -52,6 +52,7 @@ jobs:
           CircleCompareURL: $CIRCLE_COMPARE_URL
           Repo: $CIRCLE_REPOSITORY_URL
           Branch: $CIRCLE_BRANCH
+      - run: echo $MY_NAME
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
