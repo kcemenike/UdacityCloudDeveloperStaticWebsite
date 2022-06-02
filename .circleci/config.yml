@@ -50,10 +50,10 @@ jobs:
       - image: circleci/node:14
     steps:
       - run: ls -al /tmp
-      # - persist_to_workspace:
-      #     root: /tmp/dir
-      #     paths:
-      #       - output.txt
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - output.txt
       - run:
           name: 'Output Hello world'
           command: echo hello world > output.txt
@@ -80,6 +80,6 @@ workflows:
           requires:
             - print_hello
       - save_hello_world_output
-      # - print_output_file:
-      #     requires:
-      #       - save_hello_world_output
+      - print_output_file:
+          requires:
+            - save_hello_world_output
