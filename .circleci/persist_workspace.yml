@@ -1,0 +1,101 @@
+version: 2.1
+orbs:
+  welcome: circleci/welcome-orb@0.4.1
+defaults: &default
+  docker:
+    - image: circleci/node:14
+commands:
+  sayHello:
+  description: A way to describe the command
+  parameters:
+    arg1:
+      type: string
+      default: 'World'
+  steps:
+    - run: echo Hello <<parameters.arg1>>
+jobs:
+  say-hello:
+    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
+    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+    docker:
+      - image: cimg/base:stable
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run:
+          name: 'Say hello'
+          command: 'echo Hello, World!'
+      - sayHello:
+          arg1: Kelechi
+  print_hello:
+    <<: *default
+    steps:
+      - checkout
+      - run:
+          name: 'Print Hello'
+          command: 'echo Hello'
+  print_world:
+    docker:
+      - image: circleci/node:14
+    environment:
+      MY_NAME: Kelechi
+      # CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
+    steps:
+      - run:
+          name: 'Say World'
+          command: 'echo World!'
+      - run: echo This is pipeline ID <<pipeline.id>>
+      - run: echo $CIRCLE_COMPARE_URL
+      - run: echo $CIRCLE_USERNAME
+      - run: >
+          echo CircleBranch: $CIRCLE_BRANCH
+          WorkflowID: $CIRCLE_WORKFLOW_ID
+          BuildNumber: $CIRCLE_BUILD_NUM
+          PRNumber: $CIRCLE_PR_NUMBER
+          SHA: $CIRCLE_SHA2
+          CircleCompareURL: $CIRCLE_COMPARE_URL
+          Repo: $CIRCLE_REPOSITORY_URL
+          Branch: $CIRCLE_BRANCH
+      - run: echo $MY_NAME
+  save_hello_world_output:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - run: ls -al /tmp
+      - run:
+          name: 'Output Hello world'
+          command: echo hello world > /tmp/output.txt
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - output.txt
+      - run: ls -al /tmp
+
+  print_output_file:
+    docker:
+      - image: circleci/node:14
+    steps:
+      - attach_workspace:
+          at: /tmp
+      - run: ls -al /tmp
+      - run:
+          name: 'Get output'
+          command: cat /tmp/output.txt
+      - run: ls -al /tmp
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  welcome:
+    # Run the welcome/run job in its own container
+    jobs:
+      - welcome/run
+      - print_hello
+      - print_world:
+          requires:
+            - print_hello
+      - save_hello_world_output
+      - print_output_file:
+          requires:
+            - save_hello_world_output
