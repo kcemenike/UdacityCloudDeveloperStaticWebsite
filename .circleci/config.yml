@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   welcome: circleci/welcome-orb@0.4.1
-anyone-cares: &default
+anchor-name-do-not-matter: &default-docker # The ampersand is what matters
   docker:
     - image: circleci/node:14
 commands:
@@ -25,14 +25,14 @@ jobs:
       - say-hello-cmd:
           arg1: Kelechi
   print_hello:
-    <<: *default
+    <<: *default-docker # This is where we use an alias to reference an anchor
     steps:
       - checkout
       - run:
           name: 'Print Hello'
           command: 'echo Hello'
   print_world:
-    <<: *default
+    <<: *default-docker
     environment:
       MY_NAME: Kelechi
       # CIRCLE_COMPARE_URL: <<pipeline.project.git_url>>/compare/<<pipeline.git.base_revision>>..<<pipeline.git.revision>>
@@ -54,7 +54,7 @@ jobs:
           Branch: $CIRCLE_BRANCH
       - run: echo $MY_NAME
   save_hello_world_output:
-    <<: *default
+    <<: *default-docker
     steps:
       - run: ls -al /tmp
       - run:
@@ -66,7 +66,7 @@ jobs:
             - output.txt
       - run: ls -al /tmp
   print_output_file:
-    <<: *default
+    <<: *default-docker
     steps:
       - attach_workspace:
           at: /tmp
@@ -75,12 +75,8 @@ jobs:
           name: 'Get output'
           command: cat /tmp/output.txt
       - run: ls -al /tmp
-
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  welcome:
-    # Run the welcome/run job in its own container
+  welcome-workflow: # this is the name of the workflow
     jobs:
       - welcome/run
       - say-hello
