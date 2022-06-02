@@ -75,12 +75,14 @@ jobs:
           name: 'Get output'
           command: cat /tmp/output.txt
       - run: ls -al /tmp
-  this_job_will_fail:
+  this-job-will-fail:
+    <<: *default-docker
     steps:
-      run: exit 1
+      - run: exit 1
   check-failure:
+    <<: *default-docker
     steps:
-      - run: 
+      - run:
           name: failed job
           command: echo Job has FAILED by user
           when: on_fail
@@ -98,5 +100,5 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
-      = this-job-will-fail
+      - this-job-will-fail
       - check-failure
