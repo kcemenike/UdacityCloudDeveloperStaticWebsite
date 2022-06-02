@@ -49,10 +49,11 @@ jobs:
     docker:
       - image: circleci/node:14
     steps:
-      - persist_to_workspace:
-          root: /tmp/dir
-          paths:
-            - output.txt
+      - run: echo ls /tmp
+      # - persist_to_workspace:
+      #     root: /tmp/dir
+      #     paths:
+      #       - output.txt
       - run:
           name: 'Output Hello world'
           command: echo hello world > output.txt
