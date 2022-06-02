@@ -6,13 +6,13 @@ defaults: &default
     - image: circleci/node:14
 commands:
   sayHello:
-  description: A way to describe the command
-  parameters:
-    arg1:
-      type: string
-      default: 'World'
-  steps:
-    - run: echo Hello <<parameters.arg1>>
+    description: A way to describe the command
+    parameters:
+      arg1:
+        type: string
+        default: 'World'
+    steps:
+      - run: echo Hello <<parameters.arg1>>
 jobs:
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -69,7 +69,6 @@ jobs:
           paths:
             - output.txt
       - run: ls -al /tmp
-
   print_output_file:
     <<: *default
     steps:
@@ -88,6 +87,7 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - welcome/run
+      - say-hello
       - print_hello
       - print_world:
           requires:
