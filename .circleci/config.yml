@@ -57,16 +57,18 @@ jobs:
           root: /tmp
           paths:
             - output.txt
+      - run: ls -al /tmp
 
   print_output_file:
     docker:
       - image: circleci/node:14
     steps:
       - attach_workspace:
-          at: /tmp/dir
+          at: /tmp
       - run:
           name: 'Get output'
           command: cat output.txt
+      - run: ls -al /tmp
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
